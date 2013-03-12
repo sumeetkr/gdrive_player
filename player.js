@@ -51,7 +51,7 @@ var drivePlayer = drivePlayer || {};
                     fileLinks.push(fileLink);
 
                     var song = document.createElement("p");
-                    song.appendChild(document.createTextNode(fileLink));
+                    song.appendChild(document.createTextNode(data.items[i].title));
                     playlistContainer.appendChild(song);
                 }
             }
