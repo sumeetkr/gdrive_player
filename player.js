@@ -7,6 +7,7 @@ var drivePlayer = drivePlayer || {};
     initialize : function(){
       this.googleAuth();
       this.loadFirstSong();
+        this.createPlaylist();
     },
     googleAuth : function(callback){
       this.googleAuthInstance = new OAuth2('google', {
@@ -33,6 +34,28 @@ var drivePlayer = drivePlayer || {};
         $('audio source').attr('src', fileLink);
         $('audio')[0].load();
       });
+    },
+
+    createPlaylist : function(){
+        $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
+            console.log(data);
+
+            var playlistContainer = document.getElementById('playlist');
+
+            // iterate and find the first mp3 file
+            var fileLinks = new Array();
+            for(var i=0; i<data.items.length; ++i){
+                if(data.items[i].fileExtension === "mp3"){
+
+                    fileLink = data.items[i].webContentLink;
+                    fileLinks.push(fileLink);
+
+                    var song = document.createElement("div");
+                    song.appendChild(document.createTextNode(fileLink));
+                    playlistContainer.appendChild(song);
+                }
+            }
+        });
     }
   };
 })();

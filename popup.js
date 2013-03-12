@@ -1,16 +1,6 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+var QUERY = 'mp3';
 
-/**
- * Global variable containing the query we'd like to pass to Flickr. In this
- * case, kittens!
- *
- * @type {string}
- */
-var QUERY = 'kittens';
-
-var kittenGenerator = {
+var mp3PlaylistGenerator = {
     /**
      * Flickr URL that will give us lots and lots of whatever we're looking for.
      *
@@ -79,5 +69,5 @@ var kittenGenerator = {
 
 // Run our kitten generation script as soon as the document's DOM is ready.
 document.addEventListener('DOMContentLoaded', function () {
-    kittenGenerator.requestKittens();
+    mp3PlaylistGenerator.requestKittens();
 });
