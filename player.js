@@ -50,7 +50,7 @@ var drivePlayer = drivePlayer || {};
                     fileLink = data.items[i].webContentLink;
                     fileLinks.push(fileLink);
 
-                    var song = document.createElement("div");
+                    var song = document.createElement("p");
                     song.appendChild(document.createTextNode(fileLink));
                     playlistContainer.appendChild(song);
                 }
