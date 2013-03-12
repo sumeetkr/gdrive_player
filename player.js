@@ -21,7 +21,7 @@ var drivePlayer = drivePlayer || {};
     // A sample function...
     loadFirstSong : function(){
       $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
-        console.log(data);
+//        console.log(data);
         // iterate and find the first mp3 file
         var fileLink;
         for(var i=0; i<data.items.length; ++i){
@@ -38,21 +38,36 @@ var drivePlayer = drivePlayer || {};
 
     createPlaylist : function(){
         $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
-            console.log(data);
 
             var playlistContainer = document.getElementById('playlist');
 
             // iterate and find the first mp3 file
             var fileLinks = new Array();
+
+            var count = 1;
             for(var i=0; i<data.items.length; ++i){
                 if(data.items[i].fileExtension === "mp3"){
 
                     fileLink = data.items[i].webContentLink;
                     fileLinks.push(fileLink);
 
-                    var song = document.createElement("p");
-                    song.appendChild(document.createTextNode(data.items[i].title));
+                    var song = document.createElement("tr");
+
+                    var index = document.createElement("td");
+                    index.appendChild(document.createTextNode(String(count)));
+                    song.appendChild(index);
+
+                    var title = document.createElement("td");
+                    title.appendChild(document.createTextNode(data.items[i].title));
+                    song.appendChild(title);
+
+                    var share = document.createElement("td");
+                    share.innerHTML ="<button>share</button>";
+                    song.appendChild(share);
+
                     playlistContainer.appendChild(song);
+
+                    count++;
                 }
             }
         });
