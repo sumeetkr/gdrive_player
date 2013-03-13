@@ -2,11 +2,12 @@ var drivePlayer = drivePlayer || {};
 
 (function(){
   drivePlayer = {
+    playerInstance : chrome.extension.getBackgroundPage().playerInstance,
     googleAuthInstance : {},
 
     initialize : function(){
       this.googleAuth();
-      this.loadFirstSong();
+      this.eventBinding();
       this.createPlaylist();
     },
     googleAuth : function(callback){
@@ -19,9 +20,9 @@ var drivePlayer = drivePlayer || {};
     },
 
     // A sample function...
-    loadFirstSong : function(){
+    /*loadFirstSong : function(){
+      var that = this;
       $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
-//        console.log(data);
         // iterate and find the first mp3 file
         var fileLink;
         for(var i=0; i<data.items.length; ++i){
@@ -30,74 +31,46 @@ var drivePlayer = drivePlayer || {};
             break;
           }
         }
-        // load the mp3 file into the audio element
-        $('audio source').attr('src', fileLink);
-        $('audio')[0].load();
+        // load the mp3 file into the background audio element
+        that.playerInstance.setSrc(fileLink);
+        that.playerInstance.play();
+      });
+    },*/
+
+    createPlaylist : function(){
+      $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
+        var playlistContainer = $("#playlist tbody");
+        console.log(data);
+        // iterate and find the mp3 files
+        for(var i=0, count=1; i<data.items.length; ++i){
+          if(data.items[i].fileExtension === "mp3"){
+            var rowHtml = 
+              "<tr data-link='"+data.items[i].webContentLink+"'>"+
+              "<td>"+String(count++)+"</td>"+
+              "<td>"+data.items[i].title+"</td>"+
+              "<td><button>share</button></td>";
+            playlistContainer.append(rowHtml);
+          }
+        }
       });
     },
 
-    createPlaylist : function(){
-        $.get("https://www.googleapis.com/drive/v2/files?access_token="+this.googleAuthInstance.getAccessToken(), function(data){
-
-            var playlistContainer = document.getElementById('playlist');
-
-            // iterate and find the first mp3 file
-            var fileLinks = new Array();
-
-            var count = 1;
-            for(var i=0; i<data.items.length; ++i){
-                if(data.items[i].fileExtension === "mp3"){
-
-                    fileLink = data.items[i].webContentLink;
-                    fileLinks.push(fileLink);
-
-                    var song = document.createElement("tr");
-
-                    var index = document.createElement("td");
-                    index.appendChild(document.createTextNode(String(count)));
-                    song.appendChild(index);
-
-                    var title = document.createElement("td");
-                    title.appendChild(document.createTextNode(data.items[i].title));
-                    song.appendChild(title);
-
-                    var share = document.createElement("td");
-                    share.innerHTML ="<button>share</button>";
-                    song.appendChild(share);
-
-                    var play = document.createElement("td");
-                    play.innerHTML ="<button type='button'>Play</button>";
-                    song.appendChild(play);
-
-                    playlistContainer.appendChild(song);
-
-                    count++;
-                }
-            }
-        });
+    eventBinding : function(){
+      var that = this;
+      $('#playlist tbody').on('click', 'tr td:first', function(){
+        var fileLink = $(this).parent().attr('data-link');
+        that.playerInstance.setSrc(fileLink);
+        that.playerInstance.play();
+      });
     }
+
   };
 })();
 
-drivePlayer.initialize();
-//
-//function clickHandler(e) {
-//    setTimeout(playSong, 1000);
-//}
-//
-//function playSong(fileLink){
-////
-//    $('audio source').attr('src', fileLink);
-//    $('audio')[0].load();
-//}
-//
-//document.addEventListener('DOMContentLoaded', function () {
-//    document.querySelector('button').addEventListener('click', clickHandler);
-//});
 
-
-
-
+$(document).ready(function(){
+  drivePlayer.initialize();
+});
 
 
 /* Information Backup
