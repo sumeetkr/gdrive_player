@@ -6,27 +6,27 @@
     <script src="./oauth2/oauth2.js"></script>
     <script src="player.js"></script>
     <!--<script src="popup.js"></script>-->
-    <script>
-        function appendResults(text) {
-            var results = document.getElementById('results');
-            results.appendChild(document.createElement('P'));
-            results.appendChild(document.createTextNode(text));
-        }
+    <!--<script>-->
+        <!--function appendResults(text) {-->
+            <!--var results = document.getElementById('results');-->
+            <!--results.appendChild(document.createElement('P'));-->
+            <!--results.appendChild(document.createTextNode(text));-->
+        <!--}-->
 
-        function makeRequest() {
-            var request = gapi.client.urlshortener.url.get({
-                'shortUrl': 'http://goo.gl/fbsS'
-            });
-            request.execute(function(response) {
-                appendResults(response.longUrl);
-            });
-        }
+        <!--function makeRequest() {-->
+            <!--var request = gapi.client.urlshortener.url.get({-->
+                <!--'shortUrl': 'http://goo.gl/fbsS'-->
+            <!--});-->
+            <!--request.execute(function(response) {-->
+                <!--appendResults(response.longUrl);-->
+            <!--});-->
+        <!--}-->
 
-        function load() {
-            gapi.client.setApiKey('YOUR API KEY');
-            gapi.client.load('urlshortener', 'v1', makeRequest);
-        }
-    </script>
+        <!--function load() {-->
+            <!--gapi.client.setApiKey('YOUR API KEY');-->
+            <!--gapi.client.load('urlshortener', 'v1', makeRequest);-->
+        <!--}-->
+    <!--</script>-->
 </head>
 <body style="width: 480px;">
 

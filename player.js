@@ -7,7 +7,7 @@ var drivePlayer = drivePlayer || {};
     initialize : function(){
       this.googleAuth();
       this.loadFirstSong();
-        this.createPlaylist();
+      this.createPlaylist();
     },
     googleAuth : function(callback){
       this.googleAuthInstance = new OAuth2('google', {
@@ -65,6 +65,10 @@ var drivePlayer = drivePlayer || {};
                     share.innerHTML ="<button>share</button>";
                     song.appendChild(share);
 
+                    var play = document.createElement("td");
+                    play.innerHTML ="<button type='button'>Play</button>";
+                    song.appendChild(play);
+
                     playlistContainer.appendChild(song);
 
                     count++;
@@ -76,6 +80,24 @@ var drivePlayer = drivePlayer || {};
 })();
 
 drivePlayer.initialize();
+//
+//function clickHandler(e) {
+//    setTimeout(playSong, 1000);
+//}
+//
+//function playSong(fileLink){
+////
+//    $('audio source').attr('src', fileLink);
+//    $('audio')[0].load();
+//}
+//
+//document.addEventListener('DOMContentLoaded', function () {
+//    document.querySelector('button').addEventListener('click', clickHandler);
+//});
+
+
+
+
 
 
 /* Information Backup
